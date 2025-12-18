@@ -124,42 +124,25 @@ const BannerSlider = () => {
     );
   }
 
-  // Get image URL with cache-busting to force browser to reload updated images
-  const getImageUrlWithCacheBust = (imgUrl, slideId) => {
-    if (!imgUrl) return '';
-    // Add cache-busting query parameter using slide ID to ensure unique URLs
-    // This forces the browser to reload the image when it changes
-    const separator = imgUrl.includes('?') ? '&' : '?';
-    return `${imgUrl}${separator}_v=${slideId || activeIndex}`;
-  };
-
-  const currentImageUrl = slides[activeIndex]?.img
-    ? getImageUrlWithCacheBust(slides[activeIndex].img, slides[activeIndex].id)
-    : '';
-
   return (
-    <div className="recent-update-sec relative w-full px-4 xl:px-12 2xl:px-22 pt-14 pb-24 md:py-14">
-      <div
-        key={`bg-${activeIndex}-${slides[activeIndex]?.id || ''}`}
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: currentImageUrl
-            ? `url(${currentImageUrl})`
-            : "none",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          transition: "opacity 0.6s ease-in-out",
-        }}
-      />
+    <div className="recent-update-sec relative w-full px-4 xl:px-12 2xl:px-22 pt-14 pb-24 md:py-14"
+      style={{
+        backgroundImage: slides[activeIndex]?.img
+          ? `url(${slides[activeIndex].img})`
+          : "none",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        transition: "background-image 0.6s ease-in-out",
+      }}
+    >
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         viewport={{ once: true, amount: 0.2 }}
-        className="relative z-10"
       >
-        <div className="relative md:h-[75vh]">
+        <div className="relative md:h-[80vh]">
           {/* Custom Navigation */}
           <div className="absolute right-12 -bottom-15 md:bottom-8 z-10 group cursor-pointer bg-[#3E5DA2] hover:bg-white hover:scale-120 flex items-center justify-center w-7 h-7 rounded-lg shadow-md transition-all ease-in-out duration-500" id="prev">
             <MdOutlineNavigateBefore className="text-2xl text-white group-hover:text-[#3E5DA2] transition-all ease-in-out duration-500" />
@@ -194,18 +177,18 @@ const BannerSlider = () => {
                 <SwiperSlide key={slide.id || index}>
                   <div className="flex flex-col md:flex-row items-center justify-between h-full">
                     {/* Left Text */}
-                    <div className="w-full md:w-[50%] text-left z-10">
+                    <div className="w-full md:w-[25%] text-left z-10">
                       {slide.tag && (
                         <div className="flex justify-start items-center mb-5 gap-6">
                           <p className="text-sm text-[#E1DD68] font-normal tracking-wider">{slide.tag}</p>
                           <div className="h-[2px] w-28 bg-linear-to-r from-[#E1DD68] to-[#434343]/0"></div>
                         </div>
                       )}
-                      <h2 className="text-3xl md:text-[2.75rem] font-semibold tracking-wide text-white mb-3 md:mb-5">{slide.title || 'No Title'}</h2>
+                      <h2 className="text-3xl md:text-[2.75rem] font-semibold tracking-wide text-white">{slide.title || 'No Title'}</h2>
                       {slide.subtitle && (
-                        <p className="text-base 2xl:text-lg text-white max-w-md mx-auto md:mx-0">{slide.subtitle}</p>
+                        <p className="text-lg text-gray-600 max-w-md mx-auto md:mx-0">{slide.subtitle}</p>
                       )}
-                      <div className="hidden md:flex mt-7">
+                      <div className="hidden md:flex mt-11">
                         <ButtonArrow
                           to={slide.btnLink}
                           text={slide.btnText}
