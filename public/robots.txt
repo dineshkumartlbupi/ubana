@@ -1,0 +1,11 @@
+# robots.txt for definingthefuture.org
+
+User-agent: *
+Disallow: /private/
+Disallow: /tmp/
+Disallow: /api/   # block API endpoints if you don't want them indexed
+
+Allow: /
+
+# Point search engines to your sitemap
+Sitemap: https://www.definingthefuture.org/sitemap.xml

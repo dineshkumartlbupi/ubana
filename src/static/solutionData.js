@@ -1,0 +1,47 @@
+export const caseStudies = [
+  {
+    id: 1,
+    rightbg: "bg-[#ECF8AC]",
+    showCount: false,
+    testiquote: "/assets/images/solution/quote-icon.svg",
+    testidesc: "Revolutionizing customer service and seller onboarding for an e-commerce giantSince deploying HALO Genie, our average handle time dropped 60% and CSAT rose +28 points. Agents now focus on complex cases while routine queries resolve automatically.",
+    testilogo: "/assets/images/home/axis-bank.webp",
+    testilogoname: "Axis bank",
+    image: "/assets/images/solution/sol-case-one.webp",
+    stats: [
+      { label: "Avg. User Engagement", value: "+20%" },
+      { label: "Drop in Bounce Rate", value: "-20%" },
+      { label: "Avg. Resolution Time", value: "-80%" },
+    ],
+  },
+  {
+    id: 2,
+    rightbg: "bg-[#9BBAFF]",
+    showCount: false,
+    testiquote: "/assets/images/solution/quote-icon.svg",
+    testidesc: "Revolutionizing customer service and seller onboarding for an e-commerce giantSince deploying HALO Genie, our average handle time dropped 60% and CSAT rose +28 points. Agents now focus on complex cases while routine queries resolve automatically.",
+    testilogo: "/assets/images/home/axis-bank.webp",
+    testilogoname: "Axis bank",
+    image: "/assets/images/home/h-case-study-one.webp",
+    stats: [
+      { label: "Faster Response", value: "+60%" },
+      { label: "Customer Retention", value: "+40%" },
+      { label: "Ticket Load", value: "-30%" },
+    ],
+  },
+  {
+    id: 3,
+    rightbg: "bg-[#9BBAFF]",
+    showCount: false,
+    testiquote: "/assets/images/solution/quote-icon.svg",
+    testidesc: "Revolutionizing customer service and seller onboarding for an e-commerce giantSince deploying HALO Genie, our average handle time dropped 60% and CSAT rose +28 points. Agents now focus on complex cases while routine queries resolve automatically.",
+    testilogo: "/assets/images/home/axis-bank.webp",
+    testilogoname: "Axis bank",
+    image: "/assets/images/solution/sol-case-one.webp",
+    stats: [
+      { label: "Engagement Rate", value: "+25%" },
+      { label: "Cost Efficiency", value: "+18%" },
+      { label: "Response Accuracy", value: "+35%" },
+    ],
+  },
+];

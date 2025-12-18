@@ -1,0 +1,171 @@
+export const solutionFeatureData = {
+  "halo-genie": {
+    bnrtitle: "HALO Genie",
+    bnrsubtitle1: "Your 24/7",
+    bnrsubtitle2: "AI team member",
+    bnrcardbg: "bg-[#ECF8AC]",
+    bnrcaselink: "/",
+    bnrcardsrc: "/assets/images/solution/solution-sub-bnr-card.webp",
+    bnrcardalt: "halo genie mobile using",
+    ftrbannerBgClass: "bg-[url('/assets/images/solution/feature-bnr-bg.svg')]",
+    ftrbnrBgWidthClass: 'w-5xl',
+    pdfDownload: "/assets/file/Halo_Genie_Key_Features.pdf",
+    featureCards: [
+      {
+        id: 1,
+        title: "End-to-End Automation",
+        icon: "/assets/images/solution/feature-automation.svg",
+      },
+      {
+        id: 2,
+        title: "Smooth Payment Collection",
+        icon: "/assets/images/solution/feature-collection.svg",
+      },
+      {
+        id: 3,
+        title: "Seamless Agent Connectivity",
+        icon: "/assets/images/solution/feature-connectivity.svg",
+      },
+      {
+        id: 4,
+        title: "Speech Recognition",
+        icon: "/assets/images/solution/feature-recog.svg",
+      },
+      {
+        id: 5,
+        title: "Guided Customer Journey",
+        icon: "/assets/images/solution/feature-journey.svg",
+      },
+      {
+        id: 6,
+        title: "AI- Powered",
+        icon: "/assets/images/solution/feature-powered.svg",
+      },
+      {
+        id: 7,
+        title: "Multimedia",
+        icon: "/assets/images/solution/feature-media.svg",
+      },
+      {
+        id: 8,
+        title: "Personalized",
+        icon: "/assets/images/solution/feature-personalized.svg",
+      },
+      {
+        id: 9,
+        title: "Infinite Scale",
+        icon: "/assets/images/solution/feature-scale.svg",
+      },
+      {
+        id: 10,
+        title: "Omni-channel",
+        icon: "/assets/images/solution/feature-channel.svg",
+      },
+    ],
+  },
+  "halo-connect": {
+    bnrtitle: "HALO Connect",
+    bnrsubtitle1: "Your 24/7",
+    bnrsubtitle2: "AI team member",
+    bnrcardbg: "bg-[#ECF8AC]",
+    bnrcaselink: "/",
+    bnrcardsrc: "/assets/images/solution/solution-sub-bnr-card.webp",
+    bnrcardalt: "halo genie mobile using",
+    ftrbannerBgClass: "bg-[url('/assets/images/solution/feature-bnr-bg-connect.svg')]",
+    ftrbnrBgWidthClass: 'w-5xl',
+    ftrbnrPdClass: 'px-28',
+    pdfDownload: "/assets/file/Halo_Connect_Key_Features.pdf",
+    featureCards: [
+      {
+        id: 1,
+        title: "Ready Integration with CRM",
+        icon: "/assets/images/solution/feature-crm.svg",
+      },
+      {
+        id: 2,
+        title: "Agent Feedback & Training Automation",
+        icon: "/assets/images/solution/feature-feedback.svg",
+      },
+      {
+        id: 3,
+        title: "Real-time Analytics and Reporting",
+        icon: "/assets/images/solution/feature-analytic.svg",
+      },
+      {
+        id: 4,
+        title: "Comprehensive Call Recording & Quality Monitoring",
+        icon: "/assets/images/solution/feature-comprnsve.svg",
+      },
+      {
+        id: 5,
+        title: "Advanced Call Management",
+        icon: "/assets/images/solution/feature-call.svg",
+      },
+      {
+        id: 6,
+        title: "Voice Biometric",
+        icon: "/assets/images/solution/feature-voice.svg",
+      },
+      {
+        id: 7,
+        title: "IVR",
+        icon: "/assets/images/solution/feature-ivr.svg",
+      },
+      {
+        id: 8,
+        title: "Omni-channel",
+        icon: "/assets/images/solution/feature-omni.svg",
+      },
+      {
+        id: 9,
+        title: "Campaign Management",
+        icon: "/assets/images/solution/feature-management.svg",
+      },
+    ],
+  },
+  "halo-speech": {
+    bnrtitle: "HALO Speech",
+    bnrsubtitle1: "Your 24/7",
+    bnrsubtitle2: "AI team member",
+    bnrcardbg: "bg-[#ECF8AC]",
+    bnrcaselink: "/",
+    bnrcardsrc: "/assets/images/solution/solution-sub-bnr-card.webp",
+    bnrcardalt: "halo genie mobile using",
+    ftrbannerBgClass: "bg-[url('/assets/images/solution/feature-bnr-bg-speech.svg')]",
+    ftrbnrBgWidthClass: 'w-5xl',
+    ftrbnrPdClass: 'px-28',
+    pdfDownload: "/assets/file/Halo_Speech_Key_Features.pdf",
+    featureCards: [
+      {
+        id: 1,
+        title: "Complete Call Transcription",
+        icon: "/assets/images/solution/feature-transcrpt.svg",
+      },
+      {
+        id: 2,
+        title: "Sentiment Analysis",
+        icon: "/assets/images/solution/feature-speed-senti.svg",
+      },
+      {
+        id: 3,
+        title: "Product & Sales Intelligence",
+        icon: "/assets/images/solution/feature-brain-ai.svg",
+      },
+      {
+        id: 4,
+        title: "Audio Mining and Search",
+        icon: "/assets/images/solution/feature-audio.svg",
+      },
+      {
+        id: 5,
+        title: "Call Summary",
+        icon: "/assets/images/solution/feature-sumry.svg",
+      },
+      {
+        id: 6,
+        title: "Compliance Monitoring",
+        icon: "/assets/images/solution/feature-monitor.svg",
+      },
+    ],
+  },
+};
