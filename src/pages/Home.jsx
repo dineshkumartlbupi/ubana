@@ -1,6 +1,8 @@
-import React, { Suspense, lazy, useEffect, useState } from "react";
+import React, { Suspense, lazy, useEffect, useState, useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Banner from "../components/home/Banner";
 import LogoSliderTabs from "../components/logoSliderTabs";
 import TestimonialSection from "../components/home/testimonial";
@@ -15,9 +17,44 @@ import "../App.css";
 
 const API_BASE = import.meta.env.VITE_PAYLOAD_API_URL || "http://localhost:3011";
 
+gsap.registerPlugin(ScrollTrigger);
+
 function Home() {
   const [testimonials, setTestimonials] = useState(FallbackTestimonials);
   const [loading, setLoading] = useState(true);
+
+  useLayoutEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    window.scrollTo(0, 0);
+
+    const intervalId = setInterval(() => {
+      window.scrollTo(0, 0);
+    }, 10);
+
+    const timeoutId = setTimeout(() => {
+      clearInterval(intervalId);
+    }, 500);
+
+    return () => {
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'auto';
+      }
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      // Refresh ScrollTrigger to account for new content (Testimonials)
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 200);
+    }
+  }, [loading]);
 
   useEffect(() => {
     const fetchTestimonials = async () => {

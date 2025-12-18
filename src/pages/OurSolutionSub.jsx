@@ -20,29 +20,40 @@ function OurSolutionSub() {
   const pageData = solutionSubData[slug];
 
   useLayoutEffect(() => {
-    // Aggressively force scroll to top
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
     window.scrollTo(0, 0);
-    requestAnimationFrame(() => {
-      window.scrollTo(0, 0);
-    });
-    const t = setTimeout(() => {
+
+    // Force scroll to top repeatedly for a short duration to handle race conditions
+    const intervalId = setInterval(() => {
       window.scrollTo(0, 0);
     }, 10);
-    return () => clearTimeout(t);
-  }, []);
 
-  const ScrollCards = pageData?.ScrollCards || [];
+    const timeoutId = setTimeout(() => {
+      clearInterval(intervalId);
+    }, 500);
+
+    return () => {
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'auto';
+      }
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   useSEO(
     pageData
       ? {
-          title: pageData.seo?.title,
-          description: pageData.seo?.description,
-        }
+        title: pageData.seo?.title,
+        description: pageData.seo?.description,
+      }
       : {
-          title: "Our Solutions | Ubona",
-          description: "Ubona AI solutions transforming customer experience.",
-        }
+        title: "Our Solutions | Ubona",
+        description: "Ubona AI solutions transforming customer experience.",
+      }
   );
 
   return (
