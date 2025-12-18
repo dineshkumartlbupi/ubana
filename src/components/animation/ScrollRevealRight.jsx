@@ -5,7 +5,6 @@ import LazyImage from "../lazyImage";
 import { Link } from "react-router-dom";
 import ButtonArrow from "../buttonArrow";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import RegisterModal from "../Registermodel";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -16,49 +15,17 @@ const ScrollRevealRight = ({ cards }) => {
   const expandedCardRef = useRef(null);
 
   const [expandedCard, setExpandedCard] = useState(null);
-  const [showContent, setShowContent] = useState(false);
-  const contentTimeoutRef = useRef(null);
-  const [openModal, setOpenModal] = useState(false);
-
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== "undefined" ? window.innerWidth < 1024 : false
   );
 
-  // keep your handleToggle name
-  const handleToggle = (index) => {
-    // hide content immediately while animation runs
-    setShowContent(false);
-    // clear previous timeout if any
-    if (contentTimeoutRef.current) {
-      clearTimeout(contentTimeoutRef.current);
-      contentTimeoutRef.current = null;
-    }
-
-    setExpandedCard((prev) => {
-      const isClosing = prev === index;
-      // when opening, delay content until animation completes
-      if (!isClosing) {
-        contentTimeoutRef.current = setTimeout(() => {
-          setShowContent(true);
-          contentTimeoutRef.current = null;
-        }, 180); // tweak 140-220ms depending on feel
-      }
-      return isClosing ? null : index;
-    });
-  };
-
-  // cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (contentTimeoutRef.current) clearTimeout(contentTimeoutRef.current);
-      gsap.killTweensOf(window);
-    };
-  }, []);
+  const handleToggle = (index) =>
+    setExpandedCard((prev) => (prev === index ? null : index));
 
   // Helper to calculate total width consistently
   const calculateTotalWidth = (isExpanded) => {
     const baseCardWidth = 374;
-    const expandedCardWidth = 1024;
+    const expandedCardWidth = 1162;
     const cardGap = 28;
     const padding = 160;
     const widthDiff = expandedCardWidth - baseCardWidth;
@@ -91,8 +58,8 @@ const ScrollRevealRight = ({ cards }) => {
         // Use GSAP.to for smooth scroll back
         gsap.to(window, {
           scrollTo: newEnd,
-          duration: 1, // Faster scroll back on collapse feels better
-          ease: "power3.inOut",
+          duration: 0.5, // Faster scroll back on collapse feels better
+          ease: "power2.out",
           overwrite: "auto"
         });
       }
@@ -107,7 +74,7 @@ const ScrollRevealRight = ({ cards }) => {
 
     const baseCardWidth = 374;
     const gap = 28;
-    const expandedCardWidth = 1024;
+    const expandedCardWidth = 1162;
 
     // 1. Calculate the ideal visual shift to center the card
     const cardLeft = expandedCard * (baseCardWidth + gap);
@@ -141,7 +108,7 @@ const ScrollRevealRight = ({ cards }) => {
 
   const calculateCardShift = (index, expandedIndex) => {
     const baseCardWidth = 374;
-    const expandedCardWidth = 1024;
+    const expandedCardWidth = 1162;
     const widthDifference = expandedCardWidth - baseCardWidth;
 
     if (expandedIndex === null) return 0;
@@ -179,7 +146,7 @@ const ScrollRevealRight = ({ cards }) => {
       return;
 
     const baseCardWidth = 374;
-    const expandedCardWidth = 1024;
+    const expandedCardWidth = 1162;
     const isChanging = expandedCard !== null; // Flag to track if we need a refresh
 
     cards.forEach((_, i) => {
@@ -255,323 +222,185 @@ const ScrollRevealRight = ({ cards }) => {
   }, [cards.length, isMobile]);
 
   return (
-    <>
-      <section
-        ref={sectionRef}
-        className={`relative w-full ${isMobile ? "py-12.5 ml-10" : "min-h-screen pt-20"
+    <section
+      ref={sectionRef}
+      className={`relative w-full nnn  ${isMobile ? "py-12.5 ml-10" : "min-h-screen pt-20"
+        }`}
+    >
+      <div
+        className={`relative w-full ${isMobile
+          ? ""
+          : "h-screen flex items-center justify-start"
           }`}
       >
         <div
-          className={`relative w-full ${isMobile
-            ? ""
-            : "h-screen flex items-center justify-start"
+          ref={containerRef}
+          className={`relative w-full overflow-visible ${isMobile ? "flex flex-col gap-8 pr-4" : "h-[700px]"
             }`}
+          style={
+            !isMobile
+              ? {
+                display: "flex",
+                gap: "28px",
+                position: "relative",
+                height: "100%"
+              }
+              : {}
+          }
         >
-          <div
-            ref={containerRef}
-            className={`relative w-full overflow-visible ${isMobile ? "flex flex-col gap-8 pr-4" : "h-[700px]"
-              }`}
-            style={
-              !isMobile
-                ? {
-                  display: "flex",
-                  gap: "28px",
-                  position: "relative",
-                  height: "100%"
-                }
-                : {}
-            }
-          >
-            {cards.map((item, i) => {
-              const isExpanded = expandedCard === i;
-              const baseCardWidth = 374;
-              const cardGap = 28;
-              const initialLeft = i * (baseCardWidth + cardGap);
-              const zIndex = isExpanded ? 1000 : cards.length - i;
+          {cards.map((item, i) => {
+            const isExpanded = expandedCard === i;
+            const baseCardWidth = 374;
+            const cardGap = 28;
+            const initialLeft = i * (baseCardWidth + cardGap);
+            const zIndex = isExpanded ? 1000 : cards.length - i;
 
-              return (
+            return (
+              <div
+                key={i}
+                ref={(el) => (cardRefs.current[i] = el)}
+                onClick={() => handleToggle(i)}
+                className={`${isMobile ? "relative w-full!" : "absolute"
+                  } rounded-2xl -ml-10 bg-[#E1E9FF] flex flex-col p-3.5 ${item.color}`}
+                style={
+                  isMobile
+                    ? {
+                      width: "100%",
+                      minHeight: isExpanded ? "initial" : "330px",
+                    }
+                    : {
+                      width: `${baseCardWidth}px`,
+                      minHeight: "306px",
+                      top: `${i === 0 ? 35 : i * 120}px`,
+                      left: `${80 + initialLeft}px`,
+                      zIndex: zIndex,
+                      transformOrigin: "left center",
+                    }
+                }
+              >
                 <div
-                  key={i}
-                  ref={(el) => (cardRefs.current[i] = el)}
-                  onClick={() => handleToggle(i)}
-                  className={`${isMobile ? "relative w-full!" : "absolute"
-                    } rounded-2xl -ml-10 bg-[#E1E9FF] flex flex-col p-3.5 ${item.color}`}
-                  style={
-                    isMobile
-                      ? {
-                        width: "100%",
-                        minHeight: isExpanded ? "initial" : "330px",
-                      }
-                      : {
-                        width: `${baseCardWidth}px`,
-                        minHeight: "306px",
-                        top: `${i === 0 ? 35 : i * 120}px`,
-                        left: `${80 + initialLeft}px`,
-                        zIndex: zIndex,
-                        transformOrigin: "left center",
-                      }
-                  }
+                  className={`bg-[#001528] rounded-lg p-6 min-h-[300px] md:min-h-[278px] flex relative overflow-hidden ${isMobile
+                    ? isExpanded
+                      ? "flex-col pr-0"
+                      : "items-end"
+                    : isExpanded
+                      ? "items-start justify-between pr-0"
+                      : "items-end"
+                    }`}
                 >
+                  <button
+                    className={`arrow-btn absolute sfsdf top-5 right-5 transition-all duration-300 z-20 ${isExpanded ? "opacity-0 scale-0" : "opacity-100 scale-100"
+                      }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleToggle(i);
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="34"
+                      height="34"
+                      viewBox="0 0 34 34"
+                      fill="none"
+                    >
+                      <path
+                        d="M28.4771 4.75266L17.5493 4.75261C17.1238 4.7197 16.7522 5.03791 16.7193 5.46343C16.6864 5.88889 17.0046 6.26054 17.4301 6.29341C17.4698 6.29646 17.5097 6.29651 17.5493 6.29341L26.6139 6.2989L4.98228 27.9305C4.68054 28.2323 4.68054 28.7216 4.98233 29.0233C5.28411 29.3251 5.77334 29.3251 6.07507 29.0233L27.7067 7.3917L27.7067 16.4508C27.6738 16.8763 27.992 17.2479 28.4175 17.2808C28.843 17.3137 29.2146 16.9955 29.2475 16.57C29.2506 16.5303 29.2506 16.4905 29.2475 16.4508V5.52296C29.2463 5.09811 28.9021 4.75393 28.4771 4.75266Z"
+                        fill="#B6D1F0"
+                      />
+                    </svg>
+                  </button>
+
+                  {/* close */}
+                  <button
+                    className={`cross-btn absolute top-5 right-5 transition-all duration-300 z-20 ${isExpanded ? "opacity-100 scale-100" : "opacity-0 scale-0"
+                      }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleToggle(i);
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="34"
+                      height="34"
+                      viewBox="0 0 34 34"
+                      fill="none"
+                    >
+                      <path
+                        d="M25.5 8.5L8.5 25.5M8.5 8.5L25.5 25.5"
+                        stroke="#B6D1F0"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+
                   <div
-                    className={`bg-[#001528] bg-[url('/assets/images/solution/solution-card-bg.svg')] bg-bottom bg-cover rounded-lg p-6 min-h-[300px] md:min-h-[278px] flex relative overflow-hidden ${isMobile
-                      ? isExpanded
-                        ? "flex-col pr-0"
-                        : "items-end"
-                      : isExpanded
-                        ? "items-start justify-between pr-0"
-                        : "items-end"
+                    className={`${isMobile ? "w-full" : isExpanded ? "w-[30%]" : ""
                       }`}
                   >
-                    <button
-                      className={`arrow-btn absolute sfsdf top-5 right-5 transition-all duration-300 z-20 ${isExpanded ? "opacity-0 scale-0" : "opacity-100 scale-100"
+                    <h4
+                      className={`text-2xl md:text-3xl text-[#FFBF3C] uppercase font-medium mb-3 ${isExpanded && !isMobile ? "text-4xl" : ""
                         }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleToggle(i);
-                      }}
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="34"
-                        height="34"
-                        viewBox="0 0 34 34"
-                        fill="none"
-                      >
-                        <path
-                          d="M28.4771 4.75266L17.5493 4.75261C17.1238 4.7197 16.7522 5.03791 16.7193 5.46343C16.6864 5.88889 17.0046 6.26054 17.4301 6.29341C17.4698 6.29646 17.5097 6.29651 17.5493 6.29341L26.6139 6.2989L4.98228 27.9305C4.68054 28.2323 4.68054 28.7216 4.98233 29.0233C5.28411 29.3251 5.77334 29.3251 6.07507 29.0233L27.7067 7.3917L27.7067 16.4508C27.6738 16.8763 27.992 17.2479 28.4175 17.2808C28.843 17.3137 29.2146 16.9955 29.2475 16.57C29.2506 16.5303 29.2506 16.4905 29.2475 16.4508V5.52296C29.2463 5.09811 28.9021 4.75393 28.4771 4.75266Z"
-                          fill="#B6D1F0"
-                        />
-                      </svg>
-                    </button>
+                      {item.title}
+                    </h4>
 
-                    {/* close */}
-                    <button
-                      className={`cross-btn absolute top-5 right-5 transition-all duration-300 z-20 ${isExpanded ? "opacity-100 scale-100" : "opacity-0 scale-0"
+                    <p className="text-sm text-white mb-3">{item.percent}</p>
+
+                    <p
+                      className={`text-sm text-white ${isMobile
+                        ? isExpanded
+                          ? ""
+                          : "line-clamp-2"
+                        : isExpanded
+                          ? "max-w-4xl"
+                          : "max-w-sm line-clamp-2"
                         }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleToggle(i);
-                      }}
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="34"
-                        height="34"
-                        viewBox="0 0 34 34"
-                        fill="none"
-                      >
-                        <path
-                          d="M25.5 8.5L8.5 25.5M8.5 8.5L25.5 25.5"
-                          stroke="#B6D1F0"
-                          strokeWidth="2.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
+                      {item.desc}
+                    </p>
+
+                    {item?.btnText && item?.btnUrl && (
+                      <div className="flex md:mt-5 mt-8">
+                        <ButtonArrow
+                          to={item.btnUrl}
+                          text={item.btnText}
+                          bgColor="#FFBF3C"
+                          hoverColor="#1269CD"
+                          textColor="#000"
+                          hoverTextColor="#fff"
+                          padding="pl-4 py-1 pr-1 w-full md:w-auto"
+                          rounded="rounded-full"
+                          textSize="text-base"
                         />
-                      </svg>
-                    </button>
-
-                    {/* Left side collapsed content */}
-                    {!isExpanded && (
-                      <div className={`${isMobile ? "w-full" : "w-[70%]"}`}>
-                        <h4
-                          className={`text-2xl md:text-3xl text-[#FFBF3C] uppercase font-medium mb-3 ${isExpanded && !isMobile ? "text-4xl" : ""
-                            }`}
-                        >
-                          {item.title}
-                        </h4>
-
-                        <p className="text-sm text-white mb-3">{item.percent}</p>
-
-                        <p
-                          className={`text-sm text-white ${isMobile
-                            ? isExpanded
-                              ? ""
-                              : "line-clamp-2"
-                            : isExpanded
-                              ? "max-w-4xl"
-                              : "max-w-lg line-clamp-2"
-                            }`}
-                        >
-                          {item.desc}
-                        </p>
-
-                        {item?.btnText && item?.btnUrl && (
-                          <div className="flex md:mt-5 mt-8">
-                            <ButtonArrow
-                              to={item.btnUrl}
-                              text={item.btnText}
-                              bgColor="#FFBF3C"
-                              hoverColor="#1269CD"
-                              textColor="#000"
-                              hoverTextColor="#fff"
-                              padding="pl-4 py-1 pr-1 w-full md:w-auto"
-                              rounded="rounded-full"
-                              textSize="text-base"
-                            />
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {isExpanded && showContent && (
-                      <div
-                        className={`w-full animate-fadeIn ${isMobile ? "mt-6" : ""
-                          }`}
-                      >
-                        {/** ============================
-                          CARD TYPE A: OVERVIEW (Card 0)
-                          ============================ */}
-                        {i === 0 && (
-                          <div className="w-full pr-2 md:pr-6">
-
-                            <h3 className="text-2xl md:text-3xl font-semibold text-[#FFBF3C] mb-8 md:mb-18">
-                              {item.title}
-                            </h3>
-
-                            <div className="text-white text-base leading-relaxed space-y-4 max-w-4xl">
-                              {(item.longDesc || item.desc)
-                                .split("\n")
-                                .map((para, idx) => (
-                                  <p key={idx}>{para}</p>
-                                ))}
-                            </div>
-
-                            <div className="flex mt-8">
-                              <ButtonArrow
-                                onClick={() => { setOpenModal(true); setResourcesOpen(false); }}
-                                text="Schedule Tailored Demo"
-                                bgColor="#FFBF3C"
-                                hoverColor="#1269CD"
-                                textColor="#000"
-                                hoverTextColor="#fff"
-                                padding="pl-4 py-1 pr-1 w-full md:w-auto"
-                                rounded="rounded-full"
-                                textSize="text-base"
-                              />
-                            </div>
-                          </div>
-                        )}
-
-
-                        {/** =======================================
-                          CARD TYPE B: LEFT TEXT — RIGHT MEDIA LAYOUT
-                          For: Card 1 (Key Features), Card 2 (Outcomes)
-                        =========================================== */}
-                        {(i === 1 || i === 2) && (
-                          <div className="w-full flex flex-col md:flex-row gap-8 md:gap-12 items-start">
-
-                            {/* LEFT SIDE CONTENT */}
-                            <div className="text-white">
-                              <h3 className="text-2xl md:text-3xl font-semibold text-[#FFBF3C] mb-3">
-                                {item.title}
-                              </h3>
-
-                              <p className="text-sm  mb-4">{item.percent}</p>
-
-                              <p className="text-sm max-w-xl">
-                                {item.desc}
-                              </p>
-
-                              {item.btnText && item.btnUrl && (
-                                <div className="flex mt-6">
-                                  <ButtonArrow
-                                    to={item.btnUrl}
-                                    text={item.btnText}
-                                    bgColor="#FFBF3C"
-                                    hoverColor="#1269CD"
-                                    textColor="#000"
-                                    hoverTextColor="#fff"
-                                    padding="pl-4 py-1 pr-1 w-full md:w-auto"
-                                    rounded="rounded-full"
-                                    textSize="text-base"
-                                  />
-                                </div>
-                              )}
-                            </div>
-
-                            {/* RIGHT SIDE IMAGE */}
-                            <div className="flex-1 px-5 pt-5 flex justify-end">
-                              <Link to={item.url}>
-                                <LazyImage
-                                  effect="blur"
-                                  src={item.image}
-                                  alt={item.alt}
-                                  wrapperClassName="block! relative md:-bottom-6"
-                                />
-                              </Link>
-                            </div>
-
-                          </div>
-                        )}
-
-
-
-                        {/** =======================================
-                          CARD TYPE B2: FAQ RIGHT PANEL (Card 3)
-                        =========================================== */}
-                        {i === 3 && (
-                          <div className="w-full flex flex-col md:flex-row gap-10">
-
-                            {/* LEFT TEXT BLOCK */}
-                            <div className="">
-                              <h3 className="text-2xl md:text-3xl font-semibold text-[#FFBF3C] mb-4">
-                                FAQs
-                              </h3>
-
-                              <p className="text-sm text-white max-w-sm mb-3">
-                                Got Questions? We've Got You Covered!
-                              </p>
-                              <p className="text-sm text-white max-w-sm">
-                                Quick Answers to All Your Queries!
-                              </p>
-
-                              {item.btnText && item.btnUrl && (
-                                <div className="mt-6">
-                                  <ButtonArrow
-                                    to={item.btnUrl}
-                                    text={item.btnText}
-                                    bgColor="#FFBF3C"
-                                    hoverColor="#1269CD"
-                                    textColor="#000"
-                                    hoverTextColor="#fff"
-                                    padding="pl-4 py-1 pr-1 w-full md:w-auto"
-                                    rounded="rounded-full"
-                                    textSize="text-base"
-                                  />
-                                </div>
-                              )}
-                            </div>
-
-                            {/* RIGHT FAQ LIST */}
-                            <div className="flex-1 space-y-6 pt-10">
-                              {item.faqs?.map((faq, idx) => (
-                                <div
-                                  key={idx}
-                                  className="p-6 shadow-[inset_0_2px_10px_rgba(151,158,243,0.1)] rounded-2xl border border-[#909291]/24 overflow-hidden transition-all duration-500 bg-[#979EF3]/10"
-                                >
-                                  <h4 className="text-lg font-semibold text-[#FFBF3C]">{faq.q}</h4>
-                                  <p className="text-white text-base leading-relaxed mt-4">{faq.a}</p>
-                                </div>
-                              ))}
-                            </div>
-
-                          </div>
-                        )}
                       </div>
                     )}
                   </div>
+
+                  {isExpanded && (
+                    <div
+                      className={`w-full animate-fadeIn flex ${isMobile ? "justify-center mt-6" : "pl-8 justify-end"
+                        }`}
+                    >
+                      <Link to={item.url}>
+                        <LazyImage
+                          effect="blur"
+                          src={item.image}
+                          alt={item.alt}
+                          wrapperClassName="block!"
+                        />
+                      </Link>
+                    </div>
+                  )}
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
-      </section>
-      {/* Modal */}
-      <RegisterModal
-        isOpen={openModal}
-        onClose={() => setOpenModal(false)}
-      />
-    </>
+      </div>
+    </section>
   );
 };
 

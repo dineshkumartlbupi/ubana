@@ -18,6 +18,32 @@ function OurSolutionFeatures() {
   const [testimonials, setTestimonials] = useState(FallbackTestimonials);
   const [loading, setLoading] = useState(true);
 
+  useLayoutEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    window.scrollTo(0, 0);
+
+
+    // Force scroll to top repeatedly for a short duration to handle race conditions
+    const intervalId = setInterval(() => {
+      window.scrollTo(0, 0);
+    }, 100); // Check every 100ms
+
+    const timeoutId = setTimeout(() => {
+      clearInterval(intervalId);
+    }, 2000); // Run for 2 seconds to be safe against slow rendering
+
+    return () => {
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'auto';
+      }
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
@@ -38,51 +64,19 @@ function OurSolutionFeatures() {
         console.error('Error fetching testimonials:', error);
       } finally {
         setLoading(false);
+        // Ensure we are at top after data load
+        window.scrollTo(0, 0);
       }
     };
 
     fetchTestimonials();
   }, []);
 
-  useLayoutEffect(() => {
-    if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = 'manual';
-    }
-
-    // Force scroll to top immediately and repeatedly
-    window.scrollTo(0, 0);
-
-    // Keep forcing it for the first 500ms to fight any auto-scroll/restoration
-    const intervalId = setInterval(() => {
-      window.scrollTo(0, 0);
-    }, 10);
-
-    const timeoutId = setTimeout(() => {
-      clearInterval(intervalId);
-    }, 500);
-
-    return () => {
-      if ('scrollRestoration' in window.history) {
-        window.history.scrollRestoration = 'auto';
-      }
-      clearInterval(intervalId);
-      clearTimeout(timeoutId);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!loading) {
-      // Force scroll again when content loads
-      window.scrollTo(0, 0);
-    }
-  }, [loading]);
 
   const handleDownloadPDF = () => {
-    if (!pageData?.pdfDownload) return;
-
-    const link = document.createElement("a");
-    link.href = pageData.pdfDownload;
-    link.download = pageData.pdfDownload.split("/").pop(); // auto file name
+    const link = document.createElement('a');
+    link.href = '/ubona-case-studies.pdf';
+    link.download = 'ubona-case-studies.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -148,7 +142,7 @@ function OurSolutionFeatures() {
           </div>
         </div>
       </div>
-      {!loading && <TestimonialSection testimonials={testimonials} />}
+      <TestimonialSection testimonials={testimonials} />
       {/* <div className="flex flex-wrap">
         <div className="rounded-2xl border border-[#D9D9D9] bg-white p-3.5">
           <div className="rounded-lg border border-[#D9D9D9] bg-[#FFF9E9] px-6 py-8">

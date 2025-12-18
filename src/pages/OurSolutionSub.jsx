@@ -1,7 +1,6 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import useSEO from "../utils/useSEO";
 import LazyImage from "../components/lazyImage";
 import Breadcrumb from "../components/breadCrumb";
 import RevealParagraph from "../components/animation/revealParagraph";
@@ -19,42 +18,7 @@ function OurSolutionSub() {
   const { slug } = useParams(); // e.g. /conference/smartCities
   const pageData = solutionSubData[slug];
 
-  useLayoutEffect(() => {
-    if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = 'manual';
-    }
-
-    window.scrollTo(0, 0);
-
-    // Force scroll to top repeatedly for a short duration to handle race conditions
-    const intervalId = setInterval(() => {
-      window.scrollTo(0, 0);
-    }, 10);
-
-    const timeoutId = setTimeout(() => {
-      clearInterval(intervalId);
-    }, 500);
-
-    return () => {
-      if ('scrollRestoration' in window.history) {
-        window.history.scrollRestoration = 'auto';
-      }
-      clearInterval(intervalId);
-      clearTimeout(timeoutId);
-    };
-  }, []);
-
-  useSEO(
-    pageData
-      ? {
-        title: pageData.seo?.title,
-        description: pageData.seo?.description,
-      }
-      : {
-        title: "Our Solutions | Ubona",
-        description: "Ubona AI solutions transforming customer experience.",
-      }
-  );
+  const ScrollCards = pageData?.ScrollCards || [];
 
   return (
     <div className="">
@@ -99,7 +63,7 @@ function OurSolutionSub() {
               <div className={`w-full md:w-106.5 md:rounded-[20px] rounded-xl md:mt-13 mt-10 md:p-6 p-4 ${pageData.bnrcardbg}`}
                 style={{ boxShadow: "0 125px 35px 0 rgba(97, 97, 97, 0.00), 0 80px 32px 0 rgba(97, 97, 97, 0.01), 0 45px 27px 0 rgba(97, 97, 97, 0.05), 0 20px 20px 0 rgba(97, 97, 97, 0.09), 0 5px 11px 0 rgba(97, 97, 97, 0.10)" }}
               >
-                <p className="text-base md:text-base text-[#204100] font-semibold uppercase md:mb-3 mb-2">{pageData.bnrcardTtl}</p>
+                <p className="text-xs md:text-sm text-[#204100] text-medium uppercase md:mb-3 mb-2">{pageData.bnrcardTtl}</p>
                 {/* <h3 className="text-[2rem] md:text-[3.25rem] text-[#1C3900] font-bold md:mb-4.5 mb-3">₹20 Cr</h3> */}
                 <p className="text-sm md:text-base text-[#383838] font-normal md:mb-11.5 mb-8">{pageData.bnrcardPara}</p>
                 <div className="flex flex-wrap md:flex-nowrap gap-4">

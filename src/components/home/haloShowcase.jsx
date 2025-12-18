@@ -111,7 +111,7 @@ const HaloShowcase = () => {
   ];
 
   // --- Scroll animation logic ---
-  useLayoutEffect(() => {
+  useEffect(() => {
     const total = data.length;
 
     const createScrollTrigger = () => {

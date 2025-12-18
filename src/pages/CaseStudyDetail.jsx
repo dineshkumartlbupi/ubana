@@ -1,4 +1,4 @@
-import { useEffect, useState, useLayoutEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { renderRichTextContent } from "../utils/richTextRenderer";
 import { getImageUrl } from "../utils/imageUtils.jsx";
@@ -11,38 +11,6 @@ export default function CaseStudyDetail() {
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
-  useLayoutEffect(() => {
-    if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = 'manual';
-    }
-
-    // Force scroll to top immediately and repeatedly
-    window.scrollTo(0, 0);
-
-    // Keep forcing it for the first 500ms to fight any auto-scroll/restoration
-    const intervalId = setInterval(() => {
-      window.scrollTo(0, 0);
-    }, 10);
-
-    const timeoutId = setTimeout(() => {
-      clearInterval(intervalId);
-    }, 500);
-
-    return () => {
-      if ('scrollRestoration' in window.history) {
-        window.history.scrollRestoration = 'auto';
-      }
-      clearInterval(intervalId);
-      clearTimeout(timeoutId);
-    };
-  }, [slug]); // Re-run if slug changes
-
-  useEffect(() => {
-    if (!loading) {
-      window.scrollTo(0, 0);
-    }
-  }, [loading]);
 
   useEffect(() => {
     let isMounted = true;
