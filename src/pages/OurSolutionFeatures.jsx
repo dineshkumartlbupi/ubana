@@ -33,7 +33,7 @@ function OurSolutionFeatures() {
 
     const timeoutId = setTimeout(() => {
       clearInterval(intervalId);
-    }, 2000); // Run for 2 seconds to be safe against slow rendering
+    }, 1000); // Run for 2 seconds to be safe against slow rendering
 
     return () => {
       if ('scrollRestoration' in window.history) {
